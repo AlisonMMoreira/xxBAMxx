@@ -1,0 +1,30 @@
+.data
+buffer: .space 100
+msg: .asciiz "Digite uma string: "
+res: .asciiz "A string é: "
+
+.text
+.globl main
+main: 
+
+#imprime a mesnagem pedindo a string
+la $a0, msg
+li $v0, 4
+syscall
+
+#lê a string digitada
+la $a0, buffer
+li $a1, 100
+li $v0, 8
+syscall
+
+#exibe a mensagem com a string
+la $a0, res
+li $v0, 4
+syscall
+la $a0, buffer
+li $v0, 4
+syscall
+
+li $v0, 10
+syscall
