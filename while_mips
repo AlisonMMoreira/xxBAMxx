@@ -5,14 +5,17 @@ msg: .asciiz "\n"			# mensagem para a quebra de linha
 .text
 move $t0, $zero				# zera o registrador $t0, similar ao (i = 0)
 
-while:					# rótulo
+while:		                        # rótulo
+        beq $t0, 10, back               # beq => quando os valores são iguais, se $t0 = 10, vai para o back
 	addi $t0, $t0, 1		# adiciona +1 ao $t0, similar ao (i = i + 1)
 	li $v0, 1			# carrega a impressão de inteiros
 	move $a0, $t0			# dá o valor de $t0 ao $a0
 	syscall
 	li $v0, 4			# função de impressão de strings
 	la $a0, msg			# carrega o endereço de msg para a impressão
-	syscall
-	bne $t0, 10, while		# bne => quando os valores são diferentes, se $t0 =/ 10, vai para while
+	syscall	
+	j while
+	
+back:
 li $v0, 10				# finaliza o programa
 syscall
