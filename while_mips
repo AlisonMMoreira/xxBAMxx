@@ -1,6 +1,6 @@
 #while no assembly
 .data
-msg: .asciiz "\n"			# mensagem para a quebra de linha
+msg: .asciiz ", "			# mensagem para a quebra de linha
 
 .text
 move $t0, $zero				# zera o registrador $t0, similar ao (i = 0)
