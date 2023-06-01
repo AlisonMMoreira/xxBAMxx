@@ -1,0 +1,40 @@
+#while com condição 1 < j no assembly
+.data
+virg: .asciiz ", "			# mensagem para a quebra de linha
+msgi: .asciiz "Digite o valor de i: "
+msgj: .asciiz "Digite o valor de j: "
+
+.text
+
+# imprime a msgi
+li $v0, 4
+la $a0, msgi
+syscall
+# carrega o valor digitado de $s0
+li $v0, 5
+syscall
+move $s0, $v0
+# imprime a msgj
+li $v0, 4
+la $a0, msgj
+syscall
+# carrega o valor digitado de $s1
+li $v0, 5
+syscall
+move $s1, $v0
+    
+while:		                        # rótulo
+	slt $t0, $s0, $s1		# se $s0 < $s1, $t0 = 1
+        beqz $t0, back               	# beqz => se $t0 = 0, vai para o back
+	addi $s0, $s0, 1		# adiciona +1 ao $s0, similar ao (i++)
+	li $v0, 1			# carrega a impressão de inteiros
+	move $a0, $t0			# dá o valor de $t0 ao $a0
+	syscall
+	li $v0, 4			# função de impressão de strings
+	la $a0, virg			# carrega o endereço de msg para a impressão
+	syscall	
+	j while
+	
+back:
+li $v0, 10				# finaliza o programa
+syscall
