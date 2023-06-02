@@ -1,0 +1,44 @@
+.data
+n1: .word 15
+n2: .word 10
+msg_esc: .asciiz "1 - Soma, 2 - Subtração, 3 - Multiplicação, 4 - Divisão"
+msg: .asciiz "Escolha a operação: "
+
+
+
+li $s1, n1
+li $s2, n2
+
+.text
+case1:
+    addi $t0, $zero, 1
+    bne $s0, $t0, case2
+    
+    add $t1, $s1, $s2                        # função de soma
+    j fim
+
+case2:
+    addi $t0, $zero, 2
+    bne $s0, $t0, case3
+    
+    sub $t1, $s1, $s2                        # função de subtração
+    j fim
+
+case3:
+    addi $t0, $zero, 3
+    bne $s0, $t0, case4
+    
+    mul $t1, $s1, $s2                        # função de multiplicação
+    j fim
+    
+case4:
+    addi $t0, $zero, 3
+    bne $s0, $t0, case4
+    
+    div $t1, $s1, $s2                        # função de divisão
+    j fim
+
+fim:
+                                            # printar os resultados
+    li $v0, 1
+    syscall
