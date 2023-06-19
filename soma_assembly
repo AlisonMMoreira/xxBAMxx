@@ -1,0 +1,44 @@
+.data
+msg: .asciiz "Digite um número: "
+msg_result: .asciiz "\nO resultado da soma é: "
+input_buffer: .space 4
+
+.text
+.globl main
+main:
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, msg
+    syscall
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t0, $v0  # Move o valor lido para o registrador $t0
+    
+    #Repetindo
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, msg
+    syscall
+
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t1, $v0  # Move o valor lido para o registrador $t1
+    
+#-----------------------------------------------------------------------------------------------
+
+    # Soma e impressão
+    add $t3, $t0, $t1
+    
+    li $v0, 4
+    la $a0, msg_result
+    syscall
+    
+    move $a0, $t3
+    li $v0, 1
+    syscall
+	
+    # Encerra o programa
+    li $v0, 10
+    syscall
