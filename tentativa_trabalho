@@ -1,10 +1,11 @@
 .data
 input_buffer: .space 4
-msg_esc: .asciiz "1 - Soma, 2 - Subtração, 3 - Multiplicação, 4 - Divisão, 5 - Potencia"
+msg_esc: .asciiz "1 - Soma, 2 - Subtração, 3 - Multiplicação, 4 - Divisão, 5 - Potência"
 msg: .asciiz "\nEscolha a operação: "
-n1: .asciiz "Digite um número: "
+n1: .asciiz "\nDigite um número: "
 n2: .asciiz "Digite outro número: "
 result: .asciiz "O resultado é: "
+msg_erro: .asciiz "Erro! "
 
 .text
 # Imprime o prompt para o usuário
@@ -22,7 +23,7 @@ result: .asciiz "O resultado é: "
     syscall
     move $s0, $v0  # Move o valor lido para o registrador $t1
 
-case1:
+case1:			# Adição
     addi $t0, $zero, 1
     bne $s0, $t0, case2
     # Imprime o prompt para o usuário
@@ -47,7 +48,7 @@ case1:
     add $t1, $t2, $t3                        # função de soma
     j fim
 
-case2:
+case2:			# Subtração
     addi $t0, $zero, 2
     bne $s0, $t0, case3
     
@@ -73,7 +74,7 @@ case2:
     sub $t1, $t2, $t3                        # função de subtração
     j fim
 
-case3:
+case3:			# Multiplicação
     addi $t0, $zero, 3
     bne $s0, $t0, case4
     
@@ -99,7 +100,7 @@ case3:
     mul $t1, $t2, $t3                        # função de multiplicação
     j fim
     
-case4:
+case4:			# Divisão
     addi $t0, $zero, 4
     bne $s0, $t0, case5
     
@@ -111,7 +112,9 @@ case4:
     li $v0, 5
     syscall
     move $t2, $v0  # Move o valor lido para o registrador $t2
-    #Repetindo
+    j cont_div
+    
+cont_div:
     # Imprime o prompt para o usuário
     li $v0, 4
     la $a0, n2
@@ -121,22 +124,56 @@ case4:
     li $v0, 5
     syscall
     move $t3, $v0  # Move o valor lido para o registrador $t3
+    beqz $t3, div_erro
     
     div $t1, $t2, $t3                        # função de divisão
     j fim
     
-case5:	
+div_erro:
+	# se o divisor for igual a zero
+	li $v0, 4
+	la $a0, msg_erro
+	syscall	
+	j cont_div
+    
+case5:			# Potência
     addi $t0, $zero, 5
     bne $s0, $t0, erro
-#
-#
-#
-#
+	# Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n1
+    syscall
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t2, $v0  # Move o valor lido para o registrador $t2
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n2
+    syscall
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t3, $v0  # Move o valor lido para o registrador $t3
+        
+    addi $t4, $zero, 0
+    addi $t1, $zero, 1
+    j cont_pot
+    
+cont_pot:
+    mul $t1, $t1, $t3
+    addi $t4, $t4, 1
+    bne $t4, $t3, cont_pot
+    beq $t4, $t3, fim
 
 erro:
-#
-#
-#
+	li $v0, 4
+	la $a0, msg_erro
+	syscall
+
+# Encerra o programa
+    li $v0, 10
+    syscall
 
 fim:
                                             # printar os resultados
