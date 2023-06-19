@@ -1,13 +1,7 @@
 .data
-n1: .word 15
-n2: .word 10
+input_buffer: .space 4
 msg_esc: .asciiz "1 - Soma, 2 - Subtração, 3 - Multiplicação, 4 - Divisão"
 msg: .asciiz "Escolha a operação: "
-
-
-
-li $s1, n1
-li $s2, n2
 
 .text
 case1:
@@ -40,5 +34,10 @@ case4:
 
 fim:
                                             # printar os resultados
+    move $a0, $t0
     li $v0, 1
+    syscall
+
+# Encerra o programa
+    li $v0, 10
     syscall
