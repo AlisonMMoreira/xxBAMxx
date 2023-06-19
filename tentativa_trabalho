@@ -1,6 +1,6 @@
 .data
 input_buffer: .space 4
-msg_esc: .asciiz "1 - Soma, 2 - Subtração, 3 - Multiplicação, 4 - Divisão"
+msg_esc: .asciiz "1 - Soma, 2 - Subtração, 3 - Multiplicação, 4 - Divisão, 5 - Potencia"
 msg: .asciiz "\nEscolha a operação: "
 n1: .asciiz "Digite um número: "
 n2: .asciiz "Digite outro número: "
@@ -101,7 +101,7 @@ case3:
     
 case4:
     addi $t0, $zero, 4
-    bne $s0, $t0, case4
+    bne $s0, $t0, case5
     
     # Imprime o prompt para o usuário
     li $v0, 4
@@ -124,6 +124,19 @@ case4:
     
     div $t1, $t2, $t3                        # função de divisão
     j fim
+    
+case5:	
+    addi $t0, $zero, 5
+    bne $s0, $t0, erro
+#
+#
+#
+#
+
+erro:
+#
+#
+#
 
 fim:
                                             # printar os resultados
