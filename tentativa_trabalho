@@ -1,40 +1,137 @@
 .data
 input_buffer: .space 4
 msg_esc: .asciiz "1 - Soma, 2 - Subtração, 3 - Multiplicação, 4 - Divisão"
-msg: .asciiz "Escolha a operação: "
+msg: .asciiz "\nEscolha a operação: "
+n1: .asciiz "Digite um número: "
+n2: .asciiz "Digite outro número: "
+result: .asciiz "O resultado é: "
 
 .text
+# Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, msg_esc
+    syscall
+    
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, msg
+    syscall
+
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $s0, $v0  # Move o valor lido para o registrador $t1
+
 case1:
     addi $t0, $zero, 1
     bne $s0, $t0, case2
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n1
+    syscall
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t2, $v0  # Move o valor lido para o registrador $t2
+    #Repetindo
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n2
+    syscall
+
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t3, $v0  # Move o valor lido para o registrador $t3
     
-    add $t1, $s1, $s2                        # função de soma
+    add $t1, $t2, $t3                        # função de soma
     j fim
 
 case2:
     addi $t0, $zero, 2
     bne $s0, $t0, case3
     
-    sub $t1, $s1, $s2                        # função de subtração
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n1
+    syscall
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t2, $v0  # Move o valor lido para o registrador $t2
+    #Repetindo
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n2
+    syscall
+
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t3, $v0  # Move o valor lido para o registrador $t3
+    
+    sub $t1, $t2, $t3                        # função de subtração
     j fim
 
 case3:
     addi $t0, $zero, 3
     bne $s0, $t0, case4
     
-    mul $t1, $s1, $s2                        # função de multiplicação
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n1
+    syscall
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t2, $v0  # Move o valor lido para o registrador $t2
+    #Repetindo
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n2
+    syscall
+
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t3, $v0  # Move o valor lido para o registrador $t3
+    
+    mul $t1, $t2, $t3                        # função de multiplicação
     j fim
     
 case4:
-    addi $t0, $zero, 3
+    addi $t0, $zero, 4
     bne $s0, $t0, case4
     
-    div $t1, $s1, $s2                        # função de divisão
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n1
+    syscall
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t2, $v0  # Move o valor lido para o registrador $t2
+    #Repetindo
+    # Imprime o prompt para o usuário
+    li $v0, 4
+    la $a0, n2
+    syscall
+
+    # Lê o valor digitado pelo usuário
+    li $v0, 5
+    syscall
+    move $t3, $v0  # Move o valor lido para o registrador $t3
+    
+    div $t1, $t2, $t3                        # função de divisão
     j fim
 
 fim:
                                             # printar os resultados
-    move $a0, $t0
+    li $v0, 4
+    la $a0, result
+    syscall
+    
+    move $a0, $t1
     li $v0, 1
     syscall
 
