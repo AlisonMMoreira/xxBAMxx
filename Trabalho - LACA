@@ -156,16 +156,15 @@ case5:			# Potência
     syscall
     move $t3, $v0  # Move o valor lido para o registrador $t3
         
-    addi $t4, $zero, 0
-    addi $t1, $zero, 1
-    j cont_pot
-    
-cont_pot:
-    mul $t1, $t1, $t3
-    addi $t4, $t4, 1
-    bne $t4, $t3, cont_pot
-    beq $t4, $t3, fim
+    li $t1, 1
 
+cont_pot:
+	beqz $t3, fim  			# se o expoente é zero, sair do loop
+	mul $t1, $t1, $t2  		# multiplica o resultado pela base
+	subi $t3, $t3, 1  		# decrementa o expoente
+        
+	j cont_pot
+    
 erro:
 	li $v0, 4
 	la $a0, msg_erro
