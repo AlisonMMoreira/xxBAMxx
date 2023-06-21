@@ -1,13 +1,13 @@
 # Calcular o fatorial de um número.
 .data
 input_buffer: .space 4
-n1: .asciiz "Digite um número: "
+msg: .asciiz "Digite um número: "
 result: .asciiz "O resultado é: "
 
 .text
 	# Imprime o prompt para o usuário
     li $v0, 4
-    la $a0, n1
+    la $a0, msg
     syscall
 
     # Lê o valor digitado pelo usuário
@@ -15,10 +15,16 @@ result: .asciiz "O resultado é: "
     syscall
     move $s0, $v0  # Move o valor lido para o registrador $s0
     
+    addi $t0, $zero, 1 
+    
 loop:
+#	for(fat = 1; n > 1; n = n - 1)
+#   	fat = fat * n;
+	ble $s0, 1, exit
+	mul $t0, $t0, $s0
+	subi $s0, $s0, 1
 	
-	
-	
+	j loop
 	
 exit:
     # printar os resultados
@@ -26,7 +32,7 @@ exit:
     la $a0, result
     syscall
     
-    move $a0, $t1
+    move $a0, $t0
     li $v0, 1
     syscall
 
