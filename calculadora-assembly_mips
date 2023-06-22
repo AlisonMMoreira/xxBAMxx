@@ -1,0 +1,92 @@
+.data
+	opc: .asciiz "Escolha uma opção a seguir\n|A - Adição| S - Subtração | D - Divisão | M - Multiplicação | P - Potenciação |\n|Escolha uma opção: "
+	resul: .asciiz "O resultado é: "
+	num1: .asciiz "\nDigite o primeiro número: "
+	num2: .asciiz "Digite o segundo número: "
+	soma: .asciiz "soma"
+	subt: .asciiz "sub"
+	multip: .asciiz "multi"
+	divi: .asciiz "divisao"
+	potenc: .asciiz "potencia"
+
+
+.text
+.globl main
+main:
+	li $v0, 4
+	la $a0, opc
+	syscall
+menu_loop:
+	li $v0, 12
+	syscall
+	move $t0, $v0
+	
+	
+	#escolhas
+	beq $t0, 65, adicao
+	beq $t0, 83, subtracao
+	beq $t0, 68, divisao
+	beq $t0, 77, multi
+	beq $t0, 80, poten
+	j exit
+	
+adicao:
+	
+#chamando o primeiro numero
+li $v0, 4
+la $a0, num1
+syscall
+li $v0, 5
+syscall		
+move $t1, $v0
+
+#chamando o segundo numero
+li $v0, 4
+la $a0, num2
+syscall
+li $v0, 5
+syscall
+move $t2, $v0
+
+add $t3, $t1, $t2
+	
+li $v0, 4
+la $a0, resul
+syscall
+li $v0, 1
+move $a0, $t3
+syscall
+j end
+	
+subtracao:
+li $v0, 4
+la $a0, num1
+syscall
+li $v0, 5
+j end
+	
+divisao:
+li $v0, 4
+la $a0, divi
+syscall
+
+j end
+	
+multi:
+li $v0, 4
+la $a0, multip
+syscall
+
+j end
+	
+poten:
+li $v0, 4
+la $a0, potenc
+syscall	
+
+
+exit:
+li $v0, 10
+syscall
+
+end:
